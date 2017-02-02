@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>liquibaseTest</groupId>
+    <artifactId>ru.test.liquibase</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/postgresql/postgresql -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.4-1204-jdbc42</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+      <filters>
+            <filter>profiles/${build.profile.id}/config.properties</filter>
+        </filters>
+        <resources>
+            <resource>
+                <filtering>true</filtering>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+    
+      <plugins>
+		<plugin>
+		   <groupId>org.liquibase</groupId>
+		   <artifactId>liquibase-maven-plugin</artifactId>
+		   <version>3.5.3</version>
+		   <configuration>
+			  <propertyFile>${project.basedir}/target/classes/liquibase.properties</propertyFile>
+	          <changeLogFile>${project.basedir}/src/main/resources/changelog.xml</changeLogFile>         
+	          <verbose>true</verbose>
+	          <contexts>${build.profile.id}</contexts>
+	          <expressionVars>
+	            <project.basedir>${project.basedir}</project.basedir>
+	          </expressionVars>
+		<logging>debug</logging>		   
+</configuration>                
+		   <executions>
+			 <execution>
+			   <phase>process-resources</phase>                                                                  
+			   <goals>
+				 <goal>update</goal>
+			   </goals>
+			 </execution>
+		   </executions>
+		</plugin> 	
+      </plugins>
+    </build>
+    
+    <profiles>
+        <profile>
+            <id>devel</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <build.profile.id>devel</build.profile.id>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>prod</id>
+            <properties>
+                <build.profile.id>prod</build.profile.id>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>test</id>
+            <properties>
+                <build.profile.id>test</build.profile.id>
+            </properties>
+        </profile>
+
+    </profiles>
+
+</project>

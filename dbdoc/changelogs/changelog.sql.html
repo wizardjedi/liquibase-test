@@ -1,0 +1,24 @@
+<html><body><pre>
+--liquibase formatted sql
+
+--changeset asayapin:1
+create table test1 (
+    id int primary key,
+    name varchar(255)
+);
+--rollback drop table test1;
+
+--changeset asayapin:2
+alter table test1 add column description varchar(100500);
+
+--rollback alter table test1 drop column description;
+
+--changeset asayapin:3
+create table test2 (
+    id SERIAL primary key,
+    name varchar(255)
+);
+
+--rollback drop table test2;
+
+</pre></body></html>
