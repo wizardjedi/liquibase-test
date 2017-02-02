@@ -1,5 +1,0 @@
-driver: org.postgresql.Driver
-#classpath: postgresql-9.4-1204-jdbc42.jar
-url: jdbc:postgresql://localhost:15433/liquibase_test
-username: postgres
-password: 123456
